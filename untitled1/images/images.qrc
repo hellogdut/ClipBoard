@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>16.PNG</file>
+        <file>32.PNG</file>
+        <file>48.ico</file>
+        <file>64.PNG</file>
+    </qresource>
+</RCC>

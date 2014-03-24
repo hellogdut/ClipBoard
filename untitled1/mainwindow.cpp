@@ -6,7 +6,7 @@
 MainWindow::MainWindow()
 {
 
-    GetClipBoard(Last_str);  // 使忽略当前剪贴板内容
+    //GetClipBoard(Last_str);  // 使忽略当前剪贴板内容
     SetItem();
 
 }
@@ -111,7 +111,7 @@ void MainWindow::ClearAll()
     vector->clear();
 
     // 注意把Last_str清空
-    Last_str = ' ';
+    //Last_str = ' ';
     ResetListbox();
 }
 

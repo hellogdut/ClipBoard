@@ -30,14 +30,14 @@ private:
 
     void SetItem();      // 初始化按钮并布局按钮
     void ResetListbox(); // 重新加载列表框
-    bool IsNewString(const QString& str);  // 检测剪贴板中内容是否为新内容
+    bool IsNewString(const QString str);  // 检测剪贴板中内容是否为新内容
 
 private slots:
 
     bool    GetClipBoard(QString& str );             //  获取剪贴板内容
-    bool    SetClipBoard(const QString& str);             //  设置剪贴板内容
+    bool    SetClipBoard(const QString* str);             //  设置剪贴板内容
     void    ClearAll();                              //清除所有内容
-    bool    AddString(const QString& str);  //  添加内容到列表框
+    bool    AddString(const QString str);  //  添加内容到列表框
     bool    DeleteString();                 //  从列表框中删除内容
     bool    UpString();            //  将选中内容上移
     bool    DownString();          //  将选中内容下移
@@ -71,7 +71,7 @@ private:
     QTimer      *timer;
 
     //存储剪贴板内容的容器
-    QVector<QString>    *vector;
+    QVector<QString*>    *vector;
     //存储最后一次剪贴板内容
     QString Last_str;
 

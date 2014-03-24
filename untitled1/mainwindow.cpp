@@ -18,7 +18,7 @@ MainWindow::~MainWindow()
 void MainWindow::SetItem()
 {
     // 初始化容器
-    vector = new QVector<QString>;
+    vector = new QVector<QString*>;
     // 初始化定时器
     timer = new QTimer;
     timer ->start(100);
@@ -31,7 +31,7 @@ void MainWindow::SetItem()
     writefile_btn  = new QPushButton("导出");
     reverse_btn  = new QPushButton("倒置");
     help_btn     = new QPushButton("帮助");
-    exit_btn     = new QPushButton("退出");
+    //exit_btn     = new QPushButton("退出");
     //初始化列表框
     listbox      = new QListWidget();
     //初始化提示文本
@@ -54,7 +54,7 @@ void MainWindow::SetItem()
     RightTopLayout ->addWidget(up_btn);
     RightTopLayout ->addWidget(down_btn);
     RightTopLayout ->addWidget(reverse_btn);
-    RightTopLayout ->addWidget(exit_btn);
+   // RightTopLayout ->addWidget(exit_btn);
 
     //布局合并
     QHBoxLayout *TopLayout = new QHBoxLayout();
@@ -66,7 +66,7 @@ void MainWindow::SetItem()
 
 
     setWindowOpacity(1);
-    setWindowFlags(Qt::FramelessWindowHint);       //设置无边框
+   // setWindowFlags(Qt::FramelessWindowHint);       //设置无边框
     //setAttribute(Qt::WA_TranslucentBackground);  //透明
 
     //消息绑定
@@ -79,7 +79,7 @@ void MainWindow::SetItem()
     connect(reverse_btn,SIGNAL(clicked()),this,SLOT(ReverseString()));
     connect(listbox,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(DoubleClickList()));
     connect(clear_btn,SIGNAL(clicked()),this,SLOT(ClearAll()));
-    connect(exit_btn,SIGNAL(clicked()),this,SLOT(close()));
+    //connect(exit_btn,SIGNAL(clicked()),this,SLOT(close()));
 
 }
 void MainWindow::TimeOut()
@@ -98,14 +98,20 @@ void MainWindow::ResetListbox()
 
     for(int i = 0;i < vector->size();i++)
     {
-          listbox ->addItem(new QListWidgetItem(QIcon(":/images/64.PNG"), vector->at(i)));
+          listbox ->addItem(new QListWidgetItem(QIcon(":/images/64.PNG"), *vector->at(i)));
 
     }
 }
 void MainWindow::ClearAll()
 {
 
+    // 清除堆中字符串
+    for(int i = 0;i < vector->size();i++)
+        delete vector->at(i);
     vector->clear();
+
+    // 注意把Last_str清空
+    Last_str = ' ';
     ResetListbox();
 }
 
@@ -115,18 +121,20 @@ bool MainWindow::GetClipBoard(QString& str )
     str = board ->text();
     return true;
 }
-bool MainWindow::SetClipBoard(const QString& str)
+bool MainWindow::SetClipBoard(const QString* str)
 {
     QClipboard *board = QApplication::clipboard();
-    board ->setText(str);
+    board ->setText(*str);
     return true;
 }
-bool MainWindow::AddString(const QString& str)
+bool MainWindow::AddString(const QString str)
 {
 
     if(IsNewString(str))
     {
-        vector ->append(str);
+        // 安全拷贝剪贴板内容
+        QString *t = new QString(str);
+        vector ->append(t);
         ResetListbox();
         Last_str = str;
     }
@@ -138,6 +146,7 @@ bool MainWindow::DeleteString()
     int i = listbox->currentRow();
     if(i >= 0)
     {
+        delete vector->at(i);
         vector ->remove(i);
         ResetListbox();
     }
@@ -160,7 +169,7 @@ bool MainWindow::UpString()
     int i = listbox->currentRow();
     if(i > 0)
     {
-        QString tmp = vector ->at(i - 1);
+        QString *tmp = vector ->at(i - 1);
         vector ->replace(i - 1,vector ->at(i));
         vector ->replace(i,tmp);
         ResetListbox();
@@ -178,7 +187,7 @@ bool MainWindow::DownString()
     int i = listbox->currentRow();
     if((i < vector->size() - 1) && i >= 0)
     {
-        QString tmp = vector ->at(i + 1);
+        QString *tmp = vector ->at(i + 1);
         vector ->replace(i + 1,vector ->at(i));
         vector->replace(i,tmp);
         ResetListbox();
@@ -199,12 +208,11 @@ bool MainWindow::ReverseString()
     //倒置容器内容
     while(i < j)
     {
-        QString *str = vector->data();
-        QString  tmp = *(str + i);
-        *(str + i) = *(str + j);
-        *(str + j) = tmp;
-        i++;
-        j--;
+       QString* t = vector->at(i);
+       vector->replace(i,vector->at(j));
+       vector->replace(j,t);
+       i++;
+       j--;
 
     }
     ResetListbox();
@@ -243,18 +251,20 @@ bool MainWindow::SaveStringToFile()
         QTextStream out(&file);           //创建文件读写流
         for(int i = 0;i < vector->size();i++)
         {
-            out << vector->at(i) << "\r\n";
+            out << *vector->at(i) << "\r\n";
         }
         file.close();
     }
     return true;
 }
-bool MainWindow::IsNewString(const QString& str)
+bool MainWindow::IsNewString(const QString str)
 {
     if(str == Last_str)
         return false;
-    if(vector ->contains(str))
-        return false;
+    for(int i = 0;i < vector->size();i++)
+        if(*vector->at(i) == str)
+            return false;
+
     return true;
 }
 void MainWindow::DoubleClickList()

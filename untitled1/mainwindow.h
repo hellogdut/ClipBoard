@@ -18,6 +18,7 @@
 #include <QIODevice>
 #include <QTextStream>
 #include <Windows.h>
+#include <MyGlobalShortcut/MyGlobalShortCut.h>
 class MainWindow : public QWidget  // 原本继承自 QMainWindow
 {
     Q_OBJECT
@@ -50,7 +51,8 @@ private slots:
     void    mousePressEvent(QMouseEvent *event);
 
 
-
+    // 快捷键
+    void    hideWindow();
 private:
 
     //按钮
@@ -74,7 +76,8 @@ private:
     QVector<QString*>    *vector;
     //存储最后一次剪贴板内容
     QString Last_str;
-
+    //快捷键
+    MyGlobalShortCut* window_shortcut;
 };
 
 #endif // MAINWINDOW_H

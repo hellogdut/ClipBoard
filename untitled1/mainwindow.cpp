@@ -8,6 +8,8 @@ MainWindow::MainWindow()
 
     //GetClipBoard(Last_str);  // 使忽略当前剪贴板内容
     SetItem();
+    window_shortcut = new MyGlobalShortCut("F9",this);
+    connect(window_shortcut,SIGNAL(activated()),this,SLOT(hideWindow()));
 
 }
 
@@ -283,4 +285,11 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     if (ReleaseCapture())
         SendMessage(HWND(this->winId()), WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
     //event->ignore();
+}
+void MainWindow::hideWindow()
+{
+    if(this ->isHidden())
+        this ->show();
+    else
+        this ->hide();
 }

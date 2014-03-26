@@ -13,9 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    MyGlobalShortcut/MyWinEventFilter.cpp \
+    MyGlobalShortcut/MyGlobalShortCut.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    MyGlobalShortcut/MyWinEventFilter.h \
+    MyGlobalShortcut/MyGlobalShortCut.h
 
 FORMS    += mainwindow.ui
 

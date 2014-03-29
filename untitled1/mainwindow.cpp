@@ -289,7 +289,11 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 void MainWindow::hideWindow()
 {
     if(this ->isHidden())
+    {
+        //设置窗口置顶
+        this ->setWindowFlags(Qt::WindowStaysOnTopHint);
         this ->show();
+    }
     else
         this ->hide();
 }

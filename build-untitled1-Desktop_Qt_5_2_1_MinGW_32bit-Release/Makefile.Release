@@ -5,25 +5,25 @@
 # Template: app
 #############################################################################
 
-MAKEFILE      = Makefile.Debug
+MAKEFILE      = Makefile.Release
 
 ####### Compiler, tools and options
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
-CFLAGS        = -pipe -fno-keep-inline-dllexport -g -Wall -Wextra $(DEFINES)
-CXXFLAGS      = -pipe -fno-keep-inline-dllexport -g -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I..\untitled1 -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include" -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtWidgets" -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtGui" -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtCore" -I"debug" -I"." -I"." -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\win32-g++"
+DEFINES       = -DUNICODE -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+CFLAGS        = -pipe -fno-keep-inline-dllexport -O2 -Wall -Wextra $(DEFINES)
+CXXFLAGS      = -pipe -fno-keep-inline-dllexport -O2 -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
+INCPATH       = -I..\untitled1 -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include" -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtWidgets" -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtGui" -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\include\QtCore" -I"release" -I"." -I"." -I"D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\win32-g++"
 LINKER      =        g++
-LFLAGS        =        -Wl,-subsystem,windows -mthreads
-LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -lqtmaind -LD:\Qt\Qt5.2.1\5.2.1\mingw48_32\lib -lQt5Widgetsd -lQt5Guid -lQt5Cored debug\myapp_res.o 
+LFLAGS        =        -Wl,-s -Wl,-subsystem,windows -mthreads
+LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -lqtmain -LD:\Qt\Qt5.2.1\5.2.1\mingw48_32\lib -lQt5Widgets -lQt5Gui -lQt5Core release\myapp_res.o 
 QMAKE         = D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\qmake.exe
 IDC           = idc
 IDL           = midl
 ZIP           = zip -r -9
 DEF_FILE      = 
-RES_FILE      = debug\myapp_res.o
+RES_FILE      = release\myapp_res.o
 COPY          = copy /y
 SED           = $(QMAKE) -install sed
 COPY_FILE     = $(COPY)
@@ -39,7 +39,7 @@ INSTALL_DIR     = $(COPY_DIR)
 
 ####### Output directory
 
-OBJECTS_DIR   = debug
+OBJECTS_DIR   = release
 
 ####### Files
 
@@ -47,25 +47,25 @@ SOURCES       = ..\untitled1\main.cpp \
 		..\untitled1\mainwindow.cpp \
 		..\untitled1\MyGlobalShortcut\MyWinEventFilter.cpp \
 		..\untitled1\MyGlobalShortcut\MyGlobalShortCut.cpp \
-		..\untitled1\ScreenShoot\ScreenShoot.cpp debug\qrc_images.cpp \
-		debug\moc_mainwindow.cpp \
-		debug\moc_MyGlobalShortCut.cpp \
-		debug\moc_ScreenShoot.cpp
-OBJECTS       = debug/main.o \
-		debug/mainwindow.o \
-		debug/MyWinEventFilter.o \
-		debug/MyGlobalShortCut.o \
-		debug/ScreenShoot.o \
-		debug/qrc_images.o \
-		debug/moc_mainwindow.o \
-		debug/moc_MyGlobalShortCut.o \
-		debug/moc_ScreenShoot.o
+		..\untitled1\ScreenShoot\ScreenShoot.cpp release\qrc_images.cpp \
+		release\moc_mainwindow.cpp \
+		release\moc_MyGlobalShortCut.cpp \
+		release\moc_ScreenShoot.cpp
+OBJECTS       = release/main.o \
+		release/mainwindow.o \
+		release/MyWinEventFilter.o \
+		release/MyGlobalShortCut.o \
+		release/ScreenShoot.o \
+		release/qrc_images.o \
+		release/moc_mainwindow.o \
+		release/moc_MyGlobalShortCut.o \
+		release/moc_ScreenShoot.o
 
 DIST          = 
 QMAKE_TARGET  = untitled1
-DESTDIR        = debug\ #avoid trailing-slash linebreak
+DESTDIR        = release\ #avoid trailing-slash linebreak
 TARGET         = untitled1.exe
-DESTDIR_TARGET = debug\untitled1.exe
+DESTDIR_TARGET = release\untitled1.exe
 
 ####### Implicit rules
 
@@ -86,29 +86,29 @@ DESTDIR_TARGET = debug\untitled1.exe
 ####### Build rules
 
 first: all
-all: Makefile.Debug  $(DESTDIR_TARGET)
+all: Makefile.Release  $(DESTDIR_TARGET)
 
-$(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS) debug/myapp_res.o
+$(DESTDIR_TARGET): ui_mainwindow.h $(OBJECTS) release/myapp_res.o
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) $(OBJECTS)  $(LIBS)
 
-debug/myapp_res.o: ..\untitled1\myapp.rc
-	windres -i ..\untitled1\myapp.rc -o debug\myapp_res.o --include-dir=./../untitled1 $(DEFINES)
+release/myapp_res.o: ..\untitled1\myapp.rc
+	windres -i ..\untitled1\myapp.rc -o release\myapp_res.o --include-dir=./../untitled1 $(DEFINES)
 
 qmake: FORCE
-	@$(QMAKE) -spec win32-g++ CONFIG+=debug CONFIG+=declarative_debug CONFIG+=qml_debug -o Makefile.Debug ..\untitled1\untitled1.pro
+	@$(QMAKE) -spec win32-g++ -o Makefile.Release ..\untitled1\untitled1.pro
 
 qmake_all: FORCE
 
 dist:
-	$(ZIP) untitled1.zip $(SOURCES) $(DIST) ..\untitled1\untitled1.pro D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\spec_pre.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\qdevice.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\device_config.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\common\shell-win32.conf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\qconfig.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axbase.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axbase_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axcontainer.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axcontainer_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axserver.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axserver_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_bluetooth.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_bluetooth_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_bootstrap_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_clucene_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_concurrent.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_concurrent_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_core.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_core_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_declarative.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_declarative_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_designer.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_designer_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_designercomponents_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_gui.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_gui_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_help.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_help_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimedia.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimedia_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimediawidgets.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimediawidgets_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_network.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_network_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_nfc.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_nfc_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_opengl.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_opengl_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_openglextensions.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_openglextensions_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_platformsupport_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_positioning.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_positioning_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_printsupport.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_printsupport_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qml.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qml_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qmldevtools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qmltest.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qmltest_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_quick.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_quick_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_quickparticles_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_script.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_script_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_scripttools.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_scripttools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sensors.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sensors_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_serialport.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_serialport_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sql.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sql_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_svg.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_svg_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_testlib.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_testlib_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_uitools.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_uitools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkit.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkit_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkitwidgets.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkitwidgets_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_widgets.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_widgets_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_winextras.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_winextras_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xml.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xml_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xmlpatterns.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xmlpatterns_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\qt_functions.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\qt_config.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\win32-g++\qmake.conf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\spec_post.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\exclusive_builds.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\default_pre.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\default_pre.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\resolve_config.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\exclusive_builds_post.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\default_post.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\build_pass.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\qml_debug.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\declarative_debug.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\rtti.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\warn_on.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\qt.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\resources.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\moc.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\opengl.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\uic.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\windows.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\testcase_targets.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\exceptions.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\yacc.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\lex.prf ..\untitled1\untitled1.pro ..\untitled1\images\images.qrc D:/Qt/Qt5.2.1/5.2.1/mingw48_32/lib/Qt5Widgetsd.prl D:/Qt/Qt5.2.1/5.2.1/mingw48_32/lib/Qt5Guid.prl D:/Qt/Qt5.2.1/5.2.1/mingw48_32/lib/Qt5Cored.prl  RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
+	$(ZIP) untitled1.zip $(SOURCES) $(DIST) ..\untitled1\untitled1.pro D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\spec_pre.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\qdevice.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\device_config.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\common\shell-win32.conf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\qconfig.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axbase.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axbase_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axcontainer.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axcontainer_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axserver.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_axserver_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_bluetooth.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_bluetooth_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_bootstrap_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_clucene_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_concurrent.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_concurrent_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_core.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_core_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_declarative.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_declarative_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_designer.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_designer_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_designercomponents_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_gui.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_gui_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_help.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_help_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimedia.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimedia_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimediawidgets.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_multimediawidgets_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_network.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_network_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_nfc.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_nfc_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_opengl.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_opengl_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_openglextensions.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_openglextensions_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_platformsupport_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_positioning.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_positioning_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_printsupport.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_printsupport_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qml.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qml_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qmldevtools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qmltest.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qmltest_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_quick.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_quick_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_quickparticles_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_script.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_script_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_scripttools.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_scripttools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sensors.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sensors_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_serialport.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_serialport_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sql.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_sql_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_svg.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_svg_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_testlib.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_testlib_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_uitools.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_uitools_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkit.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkit_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkitwidgets.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_webkitwidgets_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_widgets.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_widgets_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_winextras.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_winextras_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xml.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xml_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xmlpatterns.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\modules\qt_lib_xmlpatterns_private.pri D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\qt_functions.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\qt_config.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\win32-g++\qmake.conf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\spec_post.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\exclusive_builds.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\default_pre.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\default_pre.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\resolve_config.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\exclusive_builds_post.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\default_post.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\build_pass.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\rtti.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\warn_on.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\qt.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\resources.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\moc.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\opengl.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\uic.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\win32\windows.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\testcase_targets.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\exceptions.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\yacc.prf D:\Qt\Qt5.2.1\5.2.1\mingw48_32\mkspecs\features\lex.prf ..\untitled1\untitled1.pro ..\untitled1\images\images.qrc D:/Qt/Qt5.2.1/5.2.1/mingw48_32/lib/Qt5Widgets.prl D:/Qt/Qt5.2.1/5.2.1/mingw48_32/lib/Qt5Gui.prl D:/Qt/Qt5.2.1/5.2.1/mingw48_32/lib/Qt5Core.prl  RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
-	-$(DEL_FILE) debug\main.o debug\mainwindow.o debug\MyWinEventFilter.o debug\MyGlobalShortCut.o debug\ScreenShoot.o debug\qrc_images.o debug\moc_mainwindow.o debug\moc_MyGlobalShortCut.o debug\moc_ScreenShoot.o
-	-$(DEL_FILE) debug\myapp_res.o
+	-$(DEL_FILE) release\main.o release\mainwindow.o release\MyWinEventFilter.o release\MyGlobalShortCut.o release\ScreenShoot.o release\qrc_images.o release\moc_mainwindow.o release\moc_MyGlobalShortCut.o release\moc_ScreenShoot.o
+	-$(DEL_FILE) release\myapp_res.o
 
 distclean: clean
 	-$(DEL_FILE) $(DESTDIR_TARGET)
-	-$(DEL_FILE) Makefile.Debug
+	-$(DEL_FILE) Makefile.Release
 
 mocclean: compiler_moc_header_clean compiler_moc_source_clean
 
@@ -116,20 +116,20 @@ mocables: compiler_moc_header_make_all compiler_moc_source_make_all
 
 check: first
 
-compiler_rcc_make_all: debug/qrc_images.cpp
+compiler_rcc_make_all: release/qrc_images.cpp
 compiler_rcc_clean:
-	-$(DEL_FILE) debug\qrc_images.cpp
-debug/qrc_images.cpp: ../untitled1/images/images.qrc \
-		../untitled1/images/32.PNG \
+	-$(DEL_FILE) release\qrc_images.cpp
+release/qrc_images.cpp: ../untitled1/images/images.qrc \
 		../untitled1/images/48.ico \
 		../untitled1/images/16.PNG \
-		../untitled1/images/64.PNG
-	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\rcc.exe -name images ..\untitled1\images\images.qrc -o debug\qrc_images.cpp
+		../untitled1/images/64.PNG \
+		../untitled1/images/32.PNG
+	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\rcc.exe -name images ..\untitled1\images\images.qrc -o release\qrc_images.cpp
 
-compiler_moc_header_make_all: debug/moc_mainwindow.cpp debug/moc_MyGlobalShortCut.cpp debug/moc_ScreenShoot.cpp
+compiler_moc_header_make_all: release/moc_mainwindow.cpp release/moc_MyGlobalShortCut.cpp release/moc_ScreenShoot.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) debug\moc_mainwindow.cpp debug\moc_MyGlobalShortCut.cpp debug\moc_ScreenShoot.cpp
-debug/moc_mainwindow.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QMainWindow \
+	-$(DEL_FILE) release\moc_mainwindow.cpp release\moc_MyGlobalShortCut.cpp release\moc_ScreenShoot.cpp
+release/moc_mainwindow.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QMainWindow \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qmainwindow.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qwidget.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/qwindowdefs.h \
@@ -321,9 +321,9 @@ debug/moc_mainwindow.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QMain
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/qdesktopservices.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qstandardpaths.h \
 		../untitled1/mainwindow.h
-	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 $(INCPATH) ..\untitled1\mainwindow.h -o debug\moc_mainwindow.cpp
+	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 $(INCPATH) ..\untitled1\mainwindow.h -o release\moc_mainwindow.cpp
 
-debug/moc_MyGlobalShortCut.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QApplication \
+release/moc_MyGlobalShortCut.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QApplication \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qapplication.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qcoreapplication.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qglobal.h \
@@ -444,9 +444,9 @@ debug/moc_MyGlobalShortCut.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/QKeySequence \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/QHash \
 		../untitled1/MyGlobalShortcut/MyGlobalShortCut.h
-	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 $(INCPATH) ..\untitled1\MyGlobalShortcut\MyGlobalShortCut.h -o debug\moc_MyGlobalShortCut.cpp
+	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 $(INCPATH) ..\untitled1\MyGlobalShortcut\MyGlobalShortCut.h -o release\moc_MyGlobalShortCut.cpp
 
-debug/moc_ScreenShoot.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QWidget \
+release/moc_ScreenShoot.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QWidget \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qwidget.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/qwindowdefs.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qglobal.h \
@@ -588,7 +588,7 @@ debug/moc_ScreenShoot.cpp: D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QWid
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/qdesktopservices.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qstandardpaths.h \
 		../untitled1/ScreenShoot/ScreenShoot.h
-	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 $(INCPATH) ..\untitled1\ScreenShoot\ScreenShoot.h -o debug\moc_ScreenShoot.cpp
+	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 $(INCPATH) ..\untitled1\ScreenShoot\ScreenShoot.h -o release\moc_ScreenShoot.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -610,7 +610,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean
 
 ####### Compile
 
-debug/main.o: ../untitled1/main.cpp ../untitled1/mainwindow.h \
+release/main.o: ../untitled1/main.cpp ../untitled1/mainwindow.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QMainWindow \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qmainwindow.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qwidget.h \
@@ -804,9 +804,9 @@ debug/main.o: ../untitled1/main.cpp ../untitled1/mainwindow.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qstandardpaths.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/QTextCodec \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qtextcodec.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\untitled1\main.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\untitled1\main.cpp
 
-debug/mainwindow.o: ../untitled1/mainwindow.cpp ../untitled1/mainwindow.h \
+release/mainwindow.o: ../untitled1/mainwindow.cpp ../untitled1/mainwindow.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QMainWindow \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qmainwindow.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qwidget.h \
@@ -999,9 +999,9 @@ debug/mainwindow.o: ../untitled1/mainwindow.cpp ../untitled1/mainwindow.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/qdesktopservices.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qstandardpaths.h \
 		ui_mainwindow.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o ..\untitled1\mainwindow.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o ..\untitled1\mainwindow.cpp
 
-debug/MyWinEventFilter.o: ../untitled1/MyGlobalShortcut/MyWinEventFilter.cpp ../untitled1/MyGlobalShortcut/MyWinEventFilter.h \
+release/MyWinEventFilter.o: ../untitled1/MyGlobalShortcut/MyWinEventFilter.cpp ../untitled1/MyGlobalShortcut/MyWinEventFilter.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/QAbstractNativeEventFilter \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qabstractnativeeventfilter.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qnamespace.h \
@@ -1122,9 +1122,9 @@ debug/MyWinEventFilter.o: ../untitled1/MyGlobalShortcut/MyWinEventFilter.cpp ../
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/QObject \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/QKeySequence \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/QHash
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\MyWinEventFilter.o ..\untitled1\MyGlobalShortcut\MyWinEventFilter.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\MyWinEventFilter.o ..\untitled1\MyGlobalShortcut\MyWinEventFilter.cpp
 
-debug/MyGlobalShortCut.o: ../untitled1/MyGlobalShortcut/MyGlobalShortCut.cpp ../untitled1/MyGlobalShortcut/MyGlobalShortCut.h \
+release/MyGlobalShortCut.o: ../untitled1/MyGlobalShortcut/MyGlobalShortCut.cpp ../untitled1/MyGlobalShortcut/MyGlobalShortCut.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QApplication \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qapplication.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qcoreapplication.h \
@@ -1245,9 +1245,9 @@ debug/MyGlobalShortCut.o: ../untitled1/MyGlobalShortcut/MyGlobalShortCut.cpp ../
 		../untitled1/MyGlobalShortcut/MyWinEventFilter.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/QKeySequence \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/QHash
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\MyGlobalShortCut.o ..\untitled1\MyGlobalShortcut\MyGlobalShortCut.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\MyGlobalShortCut.o ..\untitled1\MyGlobalShortcut\MyGlobalShortCut.cpp
 
-debug/ScreenShoot.o: ../untitled1/ScreenShoot/ScreenShoot.cpp ../untitled1/ScreenShoot/ScreenShoot.h \
+release/ScreenShoot.o: ../untitled1/ScreenShoot/ScreenShoot.cpp ../untitled1/ScreenShoot/ScreenShoot.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/QWidget \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtWidgets/qwidget.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/qwindowdefs.h \
@@ -1389,19 +1389,19 @@ debug/ScreenShoot.o: ../untitled1/ScreenShoot/ScreenShoot.cpp ../untitled1/Scree
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/QDesktopServices \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtGui/qdesktopservices.h \
 		D:/Qt/Qt5.2.1/5.2.1/mingw48_32/include/QtCore/qstandardpaths.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\ScreenShoot.o ..\untitled1\ScreenShoot\ScreenShoot.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\ScreenShoot.o ..\untitled1\ScreenShoot\ScreenShoot.cpp
 
-debug/qrc_images.o: debug/qrc_images.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\qrc_images.o debug\qrc_images.cpp
+release/qrc_images.o: release/qrc_images.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\qrc_images.o release\qrc_images.cpp
 
-debug/moc_mainwindow.o: debug/moc_mainwindow.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_mainwindow.o debug\moc_mainwindow.cpp
+release/moc_mainwindow.o: release/moc_mainwindow.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\moc_mainwindow.o release\moc_mainwindow.cpp
 
-debug/moc_MyGlobalShortCut.o: debug/moc_MyGlobalShortCut.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_MyGlobalShortCut.o debug\moc_MyGlobalShortCut.cpp
+release/moc_MyGlobalShortCut.o: release/moc_MyGlobalShortCut.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\moc_MyGlobalShortCut.o release\moc_MyGlobalShortCut.cpp
 
-debug/moc_ScreenShoot.o: debug/moc_ScreenShoot.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\moc_ScreenShoot.o debug\moc_ScreenShoot.cpp
+release/moc_ScreenShoot.o: release/moc_ScreenShoot.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\moc_ScreenShoot.o release\moc_ScreenShoot.cpp
 
 ####### Install
 

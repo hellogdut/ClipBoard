@@ -21,7 +21,7 @@ class ScreenShoot : public QWidget
     Q_OBJECT
 
 public:
-    explicit ScreenShoot(QWidget *parent = 0);
+    explicit ScreenShoot();
     ~ScreenShoot();
     void mouseMoveEvent(QMouseEvent *e);      // 处理鼠标移动
     void mousePressEvent(QMouseEvent *e);     // 处理鼠标按下

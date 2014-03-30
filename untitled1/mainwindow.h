@@ -80,6 +80,7 @@ private:
     QString Last_str;
     //快捷键
     MyGlobalShortCut* window_shortcut;
+    MyGlobalShortCut* f10_shortcut;
 };
 
 #endif // MAINWINDOW_H

@@ -1,5 +1,5 @@
 #include <ScreenShoot/ScreenShoot.h>
-ScreenShoot::ScreenShoot(QWidget *parent)
+ScreenShoot::ScreenShoot()
 {
     // 获取屏幕尺寸
     QDesktopWidget* desktopWidget = QApplication::desktop();
@@ -65,8 +65,11 @@ void ScreenShoot::mouseReleaseEvent(QMouseEvent *e)
         // 截屏
         grabScreen();
         // 截屏后关闭程序和标签栏
-        this ->close();
         label->close();
+        // 如果使用close()，当主窗口隐藏时，主窗口也会close()
+        this ->hide();
+
+
     }
 }
 void ScreenShoot::grabScreen()
@@ -93,6 +96,9 @@ void ScreenShoot::grabScreen()
     QString picPath = "file:///" + path + "/" + picName;
     QDesktopServices::openUrl(QUrl(picPath));
 
+    //删除背景图
+    system("del bg.bmp");
+
 }
 void ScreenShoot::setLabel()
 {
@@ -116,8 +122,9 @@ void ScreenShoot::keyPressEvent(QKeyEvent *e)
     // 如果按下ESC键，关闭程序
     if(e->key() == Qt::Key_Escape)
     {
-        this ->close();
         label->close();
+        // 如果使用close()，当主窗口隐藏时，主窗口也会close()
+        this ->hide();
     }
 }
 void ScreenShoot::setbackground(int width,int height)

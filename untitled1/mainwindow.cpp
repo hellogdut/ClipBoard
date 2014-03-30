@@ -10,7 +10,7 @@ MainWindow::MainWindow()
     SetItem();
     window_shortcut = new MyGlobalShortCut("F9",this);
 
-    MyGlobalShortCut* f10_shortcut = new MyGlobalShortCut("F10",this);
+    f10_shortcut = new MyGlobalShortCut("F10",this);
     connect(window_shortcut,SIGNAL(activated()),this,SLOT(F9_activated()));
     connect(f10_shortcut,SIGNAL(activated()),this,SLOT(F10_activated()));
 
@@ -303,8 +303,12 @@ void MainWindow::F9_activated()
 void MainWindow::F10_activated()
 {
 
-    ScreenShoot* ss  = new ScreenShoot(this);
-    ss->setWindowFlags(Qt::WindowStaysOnTopHint);
-    ss->setWindowFlags(Qt::FramelessWindowHint);
-    ss->show();
+    ScreenShoot* ss  = new ScreenShoot();
+
+    if(ss)
+    {
+        ss->setWindowFlags(Qt::WindowStaysOnTopHint);
+        ss->setWindowFlags(Qt::FramelessWindowHint);
+        ss->show();
+    }
 }

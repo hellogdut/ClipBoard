@@ -9,7 +9,10 @@ MainWindow::MainWindow()
     //GetClipBoard(Last_str);  // 使忽略当前剪贴板内容
     SetItem();
     window_shortcut = new MyGlobalShortCut("F9",this);
-    connect(window_shortcut,SIGNAL(activated()),this,SLOT(hideWindow()));
+
+    MyGlobalShortCut* f10_shortcut = new MyGlobalShortCut("F10",this);
+    connect(window_shortcut,SIGNAL(activated()),this,SLOT(F9_activated()));
+    connect(f10_shortcut,SIGNAL(activated()),this,SLOT(F10_activated()));
 
 }
 
@@ -286,7 +289,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         SendMessage(HWND(this->winId()), WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);
     //event->ignore();
 }
-void MainWindow::hideWindow()
+void MainWindow::F9_activated()
 {
     if(this ->isHidden())
     {
@@ -296,4 +299,12 @@ void MainWindow::hideWindow()
     }
     else
         this ->hide();
+}
+void MainWindow::F10_activated()
+{
+
+    ScreenShoot* ss  = new ScreenShoot(this);
+    ss->setWindowFlags(Qt::WindowStaysOnTopHint);
+    ss->setWindowFlags(Qt::FramelessWindowHint);
+    ss->show();
 }

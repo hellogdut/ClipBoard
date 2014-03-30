@@ -19,6 +19,7 @@
 #include <QTextStream>
 #include <Windows.h>
 #include <MyGlobalShortcut/MyGlobalShortCut.h>
+#include <ScreenShoot/ScreenShoot.h>
 class MainWindow : public QWidget  // 原本继承自 QMainWindow
 {
     Q_OBJECT
@@ -52,7 +53,8 @@ private slots:
 
 
     // 快捷键
-    void    hideWindow();
+    void    F9_activated();
+    void    F10_activated();
 private:
 
     //按钮

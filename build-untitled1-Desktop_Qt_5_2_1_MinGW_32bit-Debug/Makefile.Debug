@@ -120,10 +120,10 @@ compiler_rcc_make_all: debug/qrc_images.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) debug\qrc_images.cpp
 debug/qrc_images.cpp: ../untitled1/images/images.qrc \
-		../untitled1/images/32.PNG \
-		../untitled1/images/48.ico \
 		../untitled1/images/16.PNG \
-		../untitled1/images/64.PNG
+		../untitled1/images/64.PNG \
+		../untitled1/images/32.PNG \
+		../untitled1/images/48.ico
 	D:\Qt\Qt5.2.1\5.2.1\mingw48_32\bin\rcc.exe -name images ..\untitled1\images\images.qrc -o debug\qrc_images.cpp
 
 compiler_moc_header_make_all: debug/moc_mainwindow.cpp debug/moc_MyGlobalShortCut.cpp debug/moc_ScreenShoot.cpp

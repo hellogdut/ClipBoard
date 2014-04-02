@@ -17,9 +17,12 @@
 #include <QFileDialog>
 #include <QIODevice>
 #include <QTextStream>
+#include <QDesktopWidget>
+#include <QRect>
 #include <Windows.h>
 #include <MyGlobalShortcut/MyGlobalShortCut.h>
 #include <ScreenShoot/ScreenShoot.h>
+
 class MainWindow : public QWidget  // 原本继承自 QMainWindow
 {
     Q_OBJECT
@@ -81,6 +84,8 @@ private:
     //快捷键
     MyGlobalShortCut* window_shortcut;
     MyGlobalShortCut* f10_shortcut;
+    // 截屏
+    ScreenShoot* ss;
 };
 
 #endif // MAINWINDOW_H

@@ -9,7 +9,7 @@ MainWindow::MainWindow()
     //GetClipBoard(Last_str);  // 使忽略当前剪贴板内容
     SetItem();
     window_shortcut = new MyGlobalShortCut("F9",this);
-
+    ss = 0;
     f10_shortcut = new MyGlobalShortCut("F10",this);
     connect(window_shortcut,SIGNAL(activated()),this,SLOT(F9_activated()));
     connect(f10_shortcut,SIGNAL(activated()),this,SLOT(F10_activated()));
@@ -291,24 +291,31 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 }
 void MainWindow::F9_activated()
 {
-    if(this ->isHidden())
+
+    if(this ->isHidden()) // 窗口被隐藏
     {
         //设置窗口置顶
         this ->setWindowFlags(Qt::WindowStaysOnTopHint);
         this ->show();
-    }
+    }else
+        if(this ->isMinimized())// 窗口被最小化
+        {
+
+            this->setWindowState(Qt::WindowActive);
+            this->activateWindow();
+            this->setWindowFlags(Qt::WindowStaysOnTopHint);
+            this->show();
+        }
     else
         this ->hide();
+
 }
 void MainWindow::F10_activated()
 {
-
-    ScreenShoot* ss  = new ScreenShoot();
-
+    ScreenShoot *ss = ScreenShoot::Instance();
     if(ss)
     {
-        ss->setWindowFlags(Qt::WindowStaysOnTopHint);
-        ss->setWindowFlags(Qt::FramelessWindowHint);
-        ss->show();
+        if(ss->isHidden())
+            ss->show();
     }
 }

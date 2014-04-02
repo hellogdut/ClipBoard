@@ -15,14 +15,22 @@
 #include <QImage>         // 用于储存图片对象
 #include <QDir>           // 用于获取当前程序目录，得到截图的路径
 #include <QDesktopServices>  //配合 <QDir>  用系统浏览器打开图片
+#include <QFile>           // 删除文件
 
 class ScreenShoot : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ScreenShoot();
-    ~ScreenShoot();
+
+    static ScreenShoot* Instance()
+    {
+       if(!instance)
+           instance = new ScreenShoot();
+       return instance;
+    }
+
+
     void mouseMoveEvent(QMouseEvent *e);      // 处理鼠标移动
     void mousePressEvent(QMouseEvent *e);     // 处理鼠标按下
     void mouseReleaseEvent(QMouseEvent *e);   // 处理鼠标释放
@@ -30,15 +38,18 @@ public:
     void grabScreen();                        // 根据选取截屏，保存并打开图片
     void setLabel();                          // 动态显示截图区域尺寸
     void keyPressEvent(QKeyEvent *e);         // 处理esc取消按键
+     ~ScreenShoot();
+    void show();                              // 重写 show() 每次显示都重新渲染窗体背景 单例需要
 private:
     QRubberBand* g_rubber;
-
     QPoint origin;                            // 记录鼠标按下坐标
     QPoint end;                               // 记录鼠标释放坐标
     QLabel* label;                            // 显示截图区域尺寸
     QImage* bg;                               // 记录全屏图片
-
-
+    int g_width;                              // 屏幕宽度
+    int g_height;                             // 屏幕高度
+    static ScreenShoot* instance;
+    ScreenShoot();
 };
 
 #endif // SCREENSHOOT_H

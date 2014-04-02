@@ -1,12 +1,15 @@
 #include <ScreenShoot/ScreenShoot.h>
+ScreenShoot* ScreenShoot::instance = 0;
 ScreenShoot::ScreenShoot()
 {
     // 获取屏幕尺寸
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect deskRect = desktopWidget->screenGeometry();
     // 将窗体设置为屏幕尺寸，去掉标题栏
-    this ->resize(deskRect.width(),deskRect.height());
-    this ->setWindowFlags(Qt::FramelessWindowHint);
+    g_width = deskRect.width();
+    g_height = deskRect.height();
+    this ->resize(g_width,g_height);
+
     // 调用setbackground() 设置背景
     setbackground(deskRect.width(),deskRect.height());
 
@@ -17,6 +20,7 @@ ScreenShoot::ScreenShoot()
     label  = new QLabel("");
 
     label->setWindowFlags(Qt::FramelessWindowHint);
+    this ->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
 
 }
 ScreenShoot::~ScreenShoot()
@@ -97,7 +101,7 @@ void ScreenShoot::grabScreen()
     QDesktopServices::openUrl(QUrl(picPath));
 
     //删除背景图
-    system("del bg.bmp");
+    QFile::remove("bg.bmp");
 
 }
 void ScreenShoot::setLabel()
@@ -125,7 +129,9 @@ void ScreenShoot::keyPressEvent(QKeyEvent *e)
         label->close();
         // 如果使用close()，当主窗口隐藏时，主窗口也会close()
         this ->hide();
+        QFile::remove("bg.bmp");
     }
+
 }
 void ScreenShoot::setbackground(int width,int height)
 {
@@ -149,8 +155,14 @@ void ScreenShoot::setbackground(int width,int height)
         }
     }
     // 将图片设置为背景
+
     QPalette   palette;
     palette.setBrush(this->backgroundRole(),QBrush(bg_blend));
     this->setPalette(palette);
 
+}
+void ScreenShoot::show()
+{
+    QWidget::show();
+    setbackground(g_width,g_height);
 }

@@ -17,10 +17,11 @@ ScreenShoot::ScreenShoot()
     g_rubber = NULL;
 
     origin = end = QPoint(0,0);
-    label  = new QLabel("");
+    label  = new QLabel();
 
-    label->setWindowFlags(Qt::FramelessWindowHint);
-    this ->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
+    this ->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    label->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+
 
 }
 ScreenShoot::~ScreenShoot()
@@ -72,8 +73,6 @@ void ScreenShoot::mouseReleaseEvent(QMouseEvent *e)
         label->close();
         // 如果使用close()，当主窗口隐藏时，主窗口也会close()
         this ->hide();
-
-
     }
 }
 void ScreenShoot::grabScreen()

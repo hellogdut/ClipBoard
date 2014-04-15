@@ -13,6 +13,9 @@ MainWindow::MainWindow()
     f10_shortcut = new MyGlobalShortCut("F10",this);
     connect(window_shortcut,SIGNAL(activated()),this,SLOT(F9_activated()));
     connect(f10_shortcut,SIGNAL(activated()),this,SLOT(F10_activated()));
+    board = QApplication::clipboard();
+    connect(board,SIGNAL(dataChanged()),this,SLOT(ClipBoardChange()));
+
 
 }
 
@@ -24,9 +27,7 @@ void MainWindow::SetItem()
 {
     // 初始化容器
     vector = new QVector<QString*>;
-    // 初始化定时器
-    timer = new QTimer;
-    timer ->start(100);
+
     //初始化按钮
     clear_btn    = new QPushButton("清除");
     del_btn      = new QPushButton("删除");
@@ -36,7 +37,9 @@ void MainWindow::SetItem()
     writefile_btn  = new QPushButton("导出");
     reverse_btn  = new QPushButton("倒置");
     help_btn     = new QPushButton("帮助");
+
     //exit_btn     = new QPushButton("退出");
+
     //初始化列表框
     listbox      = new QListWidget();
     //初始化提示文本
@@ -75,7 +78,7 @@ void MainWindow::SetItem()
     //setAttribute(Qt::WA_TranslucentBackground);  //透明
 
     //消息绑定
-    connect(timer,SIGNAL(timeout()),this,SLOT(TimeOut()));
+    //connect(timer,SIGNAL(timeout()),this,SLOT(TimeOut()));
     connect(del_btn,SIGNAL(clicked()),this,SLOT(DeleteString()));
     connect(up_btn,SIGNAL(clicked()),this,SLOT(UpString()));
     connect(down_btn,SIGNAL(clicked()),this,SLOT(DownString()));
@@ -87,7 +90,7 @@ void MainWindow::SetItem()
     //connect(exit_btn,SIGNAL(clicked()),this,SLOT(close()));
 
 }
-void MainWindow::TimeOut()
+void MainWindow::ClipBoardChange()
 {
 
      QString str;
@@ -132,12 +135,12 @@ bool MainWindow::SetClipBoard(const QString* str)
     board ->setText(*str);
     return true;
 }
-bool MainWindow::AddString(const QString str)
+bool MainWindow::AddString(const QString& str)
 {
 
     if(IsNewString(str))
     {
-        // 安全拷贝剪贴板内容
+        // 拷贝剪贴板内容并储存
         QString *t = new QString(str);
         vector ->append(t);
         ResetListbox();
@@ -160,11 +163,6 @@ bool MainWindow::DeleteString()
         listbox->setCurrentRow(i);
     else
         listbox->setCurrentRow(i - 1);
-
-
-
-
-
 
     return true;
 }
@@ -218,7 +216,6 @@ bool MainWindow::ReverseString()
        vector->replace(j,t);
        i++;
        j--;
-
     }
     ResetListbox();
     listbox ->setCurrentRow(0);
@@ -262,7 +259,7 @@ bool MainWindow::SaveStringToFile()
     }
     return true;
 }
-bool MainWindow::IsNewString(const QString str)
+bool MainWindow::IsNewString(const QString& str)
 {
     if(str == Last_str)
         return false;

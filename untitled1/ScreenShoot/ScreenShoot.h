@@ -1,3 +1,6 @@
+
+// 最后更新 2014.04.06
+
 #ifndef SCREENSHOOT_H
 #define SCREENSHOOT_H
 

@@ -92,7 +92,7 @@ void ScreenShoot::grabScreen()
     QImage pic = bg->copy(x,y,wid,height);
     pic.save(picName);
 
-    // 获取程序当前路径，打片截图
+    // 获取程序当前路径，打开截图
     QString path;
     QDir dir;
     path=dir.currentPath();
@@ -100,7 +100,7 @@ void ScreenShoot::grabScreen()
     QDesktopServices::openUrl(QUrl(picPath));
 
     //删除背景图
-    QFile::remove("bg.bmp");
+
 
 }
 void ScreenShoot::setLabel()
@@ -136,12 +136,13 @@ void ScreenShoot::setbackground(int width,int height)
 {
     //截取当前屏幕
     QScreen *screen = QGuiApplication::primaryScreen();
-    screen->grabWindow(0).save("bg.bmp","bmp");
+    QImage img = screen->grabWindow(0).toImage();
 
     //读取背景图，等比例缩放RGB值，使背景变暗，进入截图模式
     int red,green,blue;
 
-    bg = new QImage("bg.bmp");
+    //bg = new QImage("bg.bmp");
+    bg = new QImage(img);
     QImage bg_blend(width,height,QImage::Format_RGB32);
     for(int x = 0; x < width; x++)
     {
